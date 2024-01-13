@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>ზამთრის გზები საქართველოში</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/GEORGIA_2.js"></script>
+        <script src="data/REGIONI_3.js"></script>
+        <script src="data/roads_4.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[40.21942182786714,39.005641764711115],[44.24641446378193,48.52064716386035]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleSatelliteHybrid_0');
+        map.getPane('pane_GoogleSatelliteHybrid_0').style.zIndex = 400;
+        var layer_GoogleSatelliteHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatelliteHybrid_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleSatelliteHybrid_0;
+        map.createPane('pane_GoogleTerrainHybrid_1');
+        map.getPane('pane_GoogleTerrainHybrid_1').style.zIndex = 401;
+        var layer_GoogleTerrainHybrid_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleTerrainHybrid_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleTerrainHybrid_1;
+        map.addLayer(layer_GoogleTerrainHybrid_1);
+        function pop_GEORGIA_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNTRY'] !== null ? autolinker.link(feature.properties['COUNTRY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Length'] !== null ? autolinker.link(feature.properties['SHAPE_Length'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Area'] !== null ? autolinker.link(feature.properties['SHAPE_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_GEORGIA_2_0() {
+            return {
+                pane: 'pane_GEORGIA_2',
+                opacity: 1,
+                color: 'rgba(253,191,111,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_GEORGIA_2');
+        map.getPane('pane_GEORGIA_2').style.zIndex = 402;
+        map.getPane('pane_GEORGIA_2').style['mix-blend-mode'] = 'normal';
+        var layer_GEORGIA_2 = new L.geoJson(json_GEORGIA_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_GEORGIA_2',
+            layerName: 'layer_GEORGIA_2',
+            pane: 'pane_GEORGIA_2',
+            onEachFeature: pop_GEORGIA_2,
+            style: style_GEORGIA_2_0,
+        });
+        bounds_group.addLayer(layer_GEORGIA_2);
+        map.addLayer(layer_GEORGIA_2);
+        function pop_REGIONI_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">REGION_ENG</th>\
+                        <td>' + (feature.properties['REGION_ENG'] !== null ? autolinker.link(feature.properties['REGION_ENG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Length'] !== null ? autolinker.link(feature.properties['SHAPE_Length'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_Area'] !== null ? autolinker.link(feature.properties['SHAPE_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_REGIONI_3_0() {
+            return {
+                pane: 'pane_REGIONI_3',
+                opacity: 1,
+                color: 'rgba(53,121,177,0.926)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_REGIONI_3');
+        map.getPane('pane_REGIONI_3').style.zIndex = 403;
+        map.getPane('pane_REGIONI_3').style['mix-blend-mode'] = 'normal';
+        var layer_REGIONI_3 = new L.geoJson(json_REGIONI_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_REGIONI_3',
+            layerName: 'layer_REGIONI_3',
+            pane: 'pane_REGIONI_3',
+            onEachFeature: pop_REGIONI_3,
+            style: style_REGIONI_3_0,
+        });
+        bounds_group.addLayer(layer_REGIONI_3);
+        map.addLayer(layer_REGIONI_3);
+        function pop_roads_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td>' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_roads_4_0(feature) {
+            switch(String(feature.properties['Name'])) {
+                case 's1-01 S1':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(139,201,116,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's1-02 S1':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(239,78,118,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's2 S3':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(147,104,222,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's3 S6':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(216,63,78,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's4-01 S8':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(143,62,218,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's4-02 S8':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(208,124,35,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's5 S9':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(239,124,57,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's6-1 S11':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(218,188,52,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's6-2 S11':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(133,155,222,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's6-3 S11':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(57,201,64,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 's7 S13':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(206,200,32,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh01 Sh1':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(40,163,212,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh02 Sh2':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(81,94,215,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh03 Sh7':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(183,219,92,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh04 Sh14':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(74,206,202,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh05 Sh15':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(60,47,236,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh06 Sh16':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(167,78,211,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh07-1 Sh17':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(89,233,73,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh07-2 Sh17':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(201,105,188,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh08 Sh18':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(73,216,238,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh09 Sh19':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(82,202,162,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh10 Sh20':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(99,66,221,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh11 Sh21':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(91,237,120,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh12-1 Sh22':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(216,82,158,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh12-2 Sh22':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(200,129,214,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh13 Sh26':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(207,54,45,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh14 Sh27':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(128,220,174,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh15 Sh30':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(213,107,215,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh16 Sh31':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(211,152,33,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh17 Sh33':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(149,237,33,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh18 Sh36':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(238,146,123,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh19 Sh38':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(211,95,141,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh20 Sh43':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(213,239,46,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh21 Sh71':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(20,231,94,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh22 Sh75':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(52,152,233,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh23 Sh81':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(163,233,112,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh24 Sh153':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(206,98,175,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Sh25 Sh209':
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(78,133,215,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_roads_4',
+                opacity: 1,
+                color: 'rgba(38,204,174,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_roads_4');
+        map.getPane('pane_roads_4').style.zIndex = 404;
+        map.getPane('pane_roads_4').style['mix-blend-mode'] = 'normal';
+        var layer_roads_4 = new L.geoJson(json_roads_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_roads_4',
+            layerName: 'layer_roads_4',
+            pane: 'pane_roads_4',
+            onEachFeature: pop_roads_4,
+            style: style_roads_4_0,
+        });
+        bounds_group.addLayer(layer_roads_4);
+        map.addLayer(layer_roads_4);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>ზამთრის გზები საქართველოში</h2>';
+            };
+            title.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'roads<br /><table><tr><td style="text-align: center;"><img src="legend/roads_4_s101S10.png" /></td><td>s1-01 S1</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s102S11.png" /></td><td>s1-02 S1</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s2S32.png" /></td><td>s2 S3</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s3S63.png" /></td><td>s3 S6</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s401S84.png" /></td><td>s4-01 S8</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s402S85.png" /></td><td>s4-02 S8</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s5S96.png" /></td><td>s5 S9</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s61S117.png" /></td><td>s6-1 S11</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s62S118.png" /></td><td>s6-2 S11</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s63S119.png" /></td><td>s6-3 S11</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_s7S1310.png" /></td><td>s7 S13</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh01Sh111.png" /></td><td>Sh01 Sh1</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh02Sh212.png" /></td><td>Sh02 Sh2</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh03Sh713.png" /></td><td>Sh03 Sh7</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh04Sh1414.png" /></td><td>Sh04 Sh14</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh05Sh1515.png" /></td><td>Sh05 Sh15</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh06Sh1616.png" /></td><td>Sh06 Sh16</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh071Sh1717.png" /></td><td>Sh07-1 Sh17</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh072Sh1718.png" /></td><td>Sh07-2 Sh17</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh08Sh1819.png" /></td><td>Sh08 Sh18</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh09Sh1920.png" /></td><td>Sh09 Sh19</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh10Sh2021.png" /></td><td>Sh10 Sh20</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh11Sh2122.png" /></td><td>Sh11 Sh21</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh121Sh2223.png" /></td><td>Sh12-1 Sh22</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh122Sh2224.png" /></td><td>Sh12-2 Sh22</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh13Sh2625.png" /></td><td>Sh13 Sh26</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh14Sh2726.png" /></td><td>Sh14 Sh27</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh15Sh3027.png" /></td><td>Sh15 Sh30</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh16Sh3128.png" /></td><td>Sh16 Sh31</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh17Sh3329.png" /></td><td>Sh17 Sh33</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh18Sh3630.png" /></td><td>Sh18 Sh36</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh19Sh3831.png" /></td><td>Sh19 Sh38</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh20Sh4332.png" /></td><td>Sh20 Sh43</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh21Sh7133.png" /></td><td>Sh21 Sh71</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh22Sh7534.png" /></td><td>Sh22 Sh75</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh23Sh8135.png" /></td><td>Sh23 Sh81</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh24Sh15336.png" /></td><td>Sh24 Sh153</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_Sh25Sh20937.png" /></td><td>Sh25 Sh209</td></tr><tr><td style="text-align: center;"><img src="legend/roads_4_38.png" /></td><td></td></tr></table>': layer_roads_4,'<img src="legend/REGIONI_3.png" /> REGIONI': layer_REGIONI_3,'<img src="legend/GEORGIA_2.png" /> GEORGIA': layer_GEORGIA_2,"Google Terrain Hybrid": layer_GoogleTerrainHybrid_1,"Google Satellite Hybrid": layer_GoogleSatelliteHybrid_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_roads_4.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_roads_4'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_roads_4,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Name'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_roads_4]);
+        map.on("zoomend", function(){
+            resetLabels([layer_roads_4]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_roads_4]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_roads_4]);
+        });
+        </script>
+    </body>
+</html>
